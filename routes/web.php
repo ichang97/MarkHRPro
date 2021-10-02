@@ -24,3 +24,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/line/test', [App\Http\Controllers\LineAuthController::class, 'test'])->name('line-test');
 Route::get('/line/auth/callback', [App\Http\Controllers\LineAuthController::class, 'authCallback'])->name('line-auth-callback');
 Route::get('/line/auth', [App\Http\Controllers\LineAuthController::class, 'auth'])->name('line-auth');
+
+Route::get('/fb/test', [App\Http\Controllers\FBAuthController::class, 'test'])->name('fb-test');
+Route::post('/fb/get-fb-data', [App\Http\Controllers\FBAuthController::class, 'getFBData'])->name('fb-get-data');

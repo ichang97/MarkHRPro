@@ -34,6 +34,9 @@ return [
     'line_callback_url' => env('LINE_CALLBACK_URL'),
     'line_token_callback_url' => env('LINE_TOKEN_CALLBACK_URL'),
 
+    ### FB API ###
+    'fb_api_endpoint' => env('FB_API_ENDPOINT'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode

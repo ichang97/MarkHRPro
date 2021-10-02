@@ -5,6 +5,8 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
+                <div id="fb-root"></div>
+
                 <div class="card-header">{{ __('Dashboard') }}</div>
 
                 <div class="card-body">
@@ -15,15 +17,18 @@
                     @endif
 
                     {{ __('You are logged in!') }} <br>
+                    {{Auth::user()}}
 
                     @if(isset($user) && empty($user->line_access_token))
                         <a href="{{route('line-auth')}}" class="btn btn-primary">Go to LINE auth</a>
                     @else
                         <h4 style="color: green;">LINE ACCOUNT IS ACTIVATED.</h4>
                     @endif
+
                 </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
+

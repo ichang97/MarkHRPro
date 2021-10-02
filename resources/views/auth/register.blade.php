@@ -4,7 +4,15 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
+            <div class="card" style="margin-bottom: 15px;">
+                <div class="card-body">
+                    <h3>Login with FB</h3>
+
+                    <div class="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="true" onlogin="checkFBLogin();"></div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-bottom: 15px;">
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
@@ -103,3 +111,67 @@
     </div>
 </div>
 @endsection
+
+@push('script')
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0&appId=292212845749628&autoLogAppEvents=1" nonce="YfQrfuhQ"></script>
+
+<script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '292212845749628',
+        cookie     : true,
+        xfbml      : true,
+        version    : 'v12.0'
+      }); 
+        
+    };
+  
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "https://connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+     
+    function fbStatus(response) {  
+        if (response.status === 'connected') {  
+            getFBAccountData(response.authResponse.accessToken);  
+        } else {                                
+            document.getElementById('status').innerHTML = 'Please log ' + 'into this webpage.';
+        }
+    }
+
+    function getFBAccountData(token) {
+        FB.api(
+            '/me', 
+            'GET',
+            {"fields":"id,name,email"},
+            function(response) {
+                if(response && response.email){
+                    $.ajax({
+                        type: 'POST',
+                        url: '/fb/get-fb-data',
+                        data: {_token: '{{csrf_token()}}', 
+                                fb_user_id: response.id, 
+                                fb_email: response.email,
+                                fb_name: response.name,
+                                fb_access_token: token},
+                        success: function(){
+                            window.location.href = '/home';
+                        }
+                    });
+                }
+            }
+        );
+    }
+
+    function checkFBLogin() {               
+        FB.getLoginStatus(function(response) {
+            fbStatus(response);
+        }); 
+    }
+
+  </script>
+
+@endpush
